@@ -1,0 +1,22 @@
+{
+  "digital_marketing": [
+    "#DigitalMarketing", "#MarketingStrategy", "#SocialMediaMarketing", "#ContentMarketing", 
+    "#SEO", "#GrowthHacking", "#EmailMarketing", "#MarketingTips", "#InboundMarketing", "#BrandAwareness"
+  ],
+  "business_growth": [
+    "#BusinessGrowth", "#Entrepreneurship", "#SmallBusiness", "#StartupLife", 
+    "#BusinessMindset", "#SuccessTips", "#ScalingBusiness", "#B2BMarketing", "#Leadership", "#Innovation"
+  ],
+  "branding": [
+    "#Branding", "#BrandIdentity", "#GraphicDesign", "#CreativeAgency", 
+    "#BrandStorytelling", "#LogoDesign", "#VisualIdentity", "#PersonalBranding", "#DesignInspiration", "#BrandStrategy"
+  ],
+  "tech_innovation": [
+    "#TechTrends", "#AIinMarketing", "#SaaS", "#FutureOfTech", 
+    "#Automation", "#DigitalTransformation", "#MarTech", "#DataAnalytics", "#Web3", "#FinTech"
+  ],
+  "content_creation": [
+    "#ContentCreator", "#UserGeneratedContent", "#VideoMarketing", "#Copywriting", 
+    "#Storytelling", "#CreativeContent", "#InfluencerMarketing", "#PodcastLife", "#VlogLife", "#DesignThinking"
+  ]
+}
