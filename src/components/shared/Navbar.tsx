@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -9,7 +10,8 @@ import {
   SheetTrigger,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Menu, X, Zap ,Pencil } from "lucide-react";
+import { Menu, X, Zap ,Pencil, LogOut, User } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -22,6 +24,7 @@ const navLinks = [
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -64,12 +67,30 @@ export function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/auth">Login</Link>
-            </Button>
-            <Button size="sm" className="bg-black text-white hover:bg-gray-800" asChild>
-              <Link href="/signup">Get Started</Link>
-            </Button>
+            {!session ? (
+              <>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link href="/auth">Login</Link>
+                </Button>
+                <Button size="sm" className="bg-black text-white hover:bg-gray-800" asChild>
+                  <Link href="/auth">Get Started</Link>
+                </Button>
+              </>
+            ) : (
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 px-3 py-1 bg-gray-50 border border-gray-200 rounded-full">
+                  {session.user?.image ? (
+                    <Image src={session.user.image} alt="Avatar" width={24} height={24} className="w-6 h-6 rounded-full border border-black/10 grayscale" />
+                  ) : (
+                    <User className="w-4 h-4" />
+                  )}
+                  <span className="text-xs font-bold uppercase tracking-widest truncate max-w-[100px]">{session.user?.name?.split(' ')[0]}</span>
+                </div>
+                <Button variant="ghost" size="icon" onClick={() => signOut()} title="Logout" className="hover:text-red-600">
+                  <LogOut className="w-4 h-4" />
+                </Button>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -92,7 +113,7 @@ export function Navbar() {
                     <div className="w-7 h-7 bg-black rounded-lg flex items-center justify-center">
                       <Zap className="w-3.5 h-3.5 text-white" />
                     </div>
-                    <span className="font-bold text-lg">MyApp</span>
+                    <span className="font-bold text-lg">ToolsJob</span>
                   </Link>
                   <Button
                     variant="ghost"
@@ -119,16 +140,34 @@ export function Navbar() {
 
                 {/* Sheet Footer CTA */}
                 <div className="p-4 border-t flex flex-col gap-2">
-                  <Button variant="outline" className="w-full" asChild>
-                    <Link href="/auth" onClick={() => setIsOpen(false)}>
-                      Login
-                    </Link>
-                  </Button>
-                  <Button className="w-full bg-black text-white hover:bg-gray-800" asChild>
-                    <Link href="/signup" onClick={() => setIsOpen(false)}>
-                      Get Started
-                    </Link>
-                  </Button>
+                  {!session ? (
+                    <>
+                      <Button variant="outline" className="w-full" asChild>
+                        <Link href="/auth" onClick={() => setIsOpen(false)}>
+                          Login
+                        </Link>
+                      </Button>
+                      <Button className="w-full bg-black text-white hover:bg-gray-800" asChild>
+                        <Link href="/auth" onClick={() => setIsOpen(false)}>
+                          Get Started
+                        </Link>
+                      </Button>
+                    </>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                        {session.user?.image && <Image src={session.user.image} alt="Avatar" width={32} height={32} className="w-8 h-8 rounded-full border border-black/10 grayscale" />}
+                        <div>
+                          <p className="text-xs font-black uppercase tracking-widest">{session.user?.name}</p>
+                          <p className="text-[10px] text-gray-500 truncate">{session.user?.email}</p>
+                        </div>
+                      </div>
+                      <Button variant="outline" className="w-full border-red-100 text-red-600 hover:bg-red-50 hover:text-red-700" onClick={() => { signOut(); setIsOpen(false); }}>
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Deauthorize
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
             </SheetContent>
