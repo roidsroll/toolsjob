@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import hashtagsData from '@/utils/hashtags.json';
 import ROICalculator from '@/components/tools/ROICalculator';
+import UTMLinkBuilder from '@/components/tools/UTMLinkBuilder';
+import ContentCalendarGenerator from '@/components/tools/ContentCalendarGenerator';
 
 type Category = keyof typeof hashtagsData;
 
@@ -36,6 +38,9 @@ export default function BusinessMarketingPage() {
         
         {/* ROI Calculator Section */}
         <ROICalculator />
+
+        {/* UTM Link Builder Section */}
+        <UTMLinkBuilder />
 
         {/* Hashtag Generator Section */}
         <div className="py-8 border-t-2 border-black/10">
@@ -94,11 +99,13 @@ export default function BusinessMarketingPage() {
               </div>
             )}
           </div>
-        </div>
+          </div>
 
+          <ContentCalendarGenerator />
 
-        <button 
+          <button 
           onClick={() => window.location.href = '/auth'}
+
           className="text-xs font-black uppercase tracking-widest border-b-2 border-black hover:bg-black hover:text-white px-4 py-2 transition-all duration-200"
         >
           ← Back to Login

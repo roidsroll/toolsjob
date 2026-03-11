@@ -1,34 +1,53 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { PieChart, ArrowUpRight, Target, Layers, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowUpRight, Target, Layers, Zap, LucideIcon } from 'lucide-react';
+
+interface ProgressBarProps {
+  label: string;
+  value: string;
+  percent: number;
+  suffix?: string;
+  icon: LucideIcon;
+}
+
+const ProgressBar = ({ label, value, percent, suffix = "%", icon: Icon }: ProgressBarProps) => (
+  <div className="space-y-2">
+    <div className="flex justify-between items-end">
+      <div className="flex items-center gap-2 text-neutral-500">
+        <Icon className="w-3.5 h-3.5" />
+        <span className="text-[10px] font-black uppercase tracking-widest">{label}</span>
+      </div>
+      <span className="text-sm font-black">{value}{suffix}</span>
+    </div>
+    <div className="h-3 bg-neutral-100 border border-black overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+      <div 
+        className="h-full bg-black transition-all duration-500 ease-out"
+        style={{ width: `${Math.min(Math.max(percent, 0), 100)}%` }}
+      />
+    </div>
+  </div>
+);
 
 export default function ROICalculator() {
   const [investment, setInvestment] = useState<number>(0);
   const [revenue, setRevenue] = useState<number>(0);
   const [extraCosts, setExtraCosts] = useState<number>(0);
-  
-  const [results, setResults] = useState({
-    roi: 0,
-    netProfit: 0,
-    margin: 0,
-    multiple: 0
-  });
 
-  useEffect(() => {
+  const results = (() => {
     const totalCost = Number(investment) + Number(extraCosts);
     const netProfit = Number(revenue) - totalCost;
     const roi = totalCost > 0 ? (netProfit / totalCost) * 100 : 0;
     const margin = Number(revenue) > 0 ? (netProfit / Number(revenue)) * 100 : 0;
     const multiple = totalCost > 0 ? Number(revenue) / totalCost : 0;
 
-    setResults({
+    return {
       roi,
       netProfit,
       margin,
       multiple
-    });
-  }, [investment, revenue, extraCosts]);
+    };
+  })();
 
   const formatDisplay = (val: number): string => {
     if (!val) return "";
@@ -47,24 +66,6 @@ export default function ROICalculator() {
     if (absVal >= 1e6) return sign + "Rp " + (absVal / 1e6).toFixed(1) + " Jt";
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(val);
   };
-
-  const ProgressBar = ({ label, value, percent, suffix = "%", icon: Icon }: any) => (
-    <div className="space-y-2">
-      <div className="flex justify-between items-end">
-        <div className="flex items-center gap-2 text-neutral-500">
-          <Icon className="w-3.5 h-3.5" />
-          <span className="text-[10px] font-black uppercase tracking-widest">{label}</span>
-        </div>
-        <span className="text-sm font-black">{value}{suffix}</span>
-      </div>
-      <div className="h-3 bg-neutral-100 border border-black overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-        <div 
-          className="h-full bg-black transition-all duration-500 ease-out"
-          style={{ width: `${Math.min(Math.max(percent, 0), 100)}%` }}
-        />
-      </div>
-    </div>
-  );
 
   return (
     <div className="w-full mb-12 bg-white">
