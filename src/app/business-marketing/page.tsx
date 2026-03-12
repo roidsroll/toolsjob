@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import hashtagsData from '@/utils/hashtags.json';
 import ROICalculator from '@/components/tools/ROICalculator';
 import UTMLinkBuilder from '@/components/tools/UTMLinkBuilder';
-import ContentCalendarGenerator from '@/components/tools/ContentCalendarGenerator';
 
 type Category = keyof typeof hashtagsData;
 
@@ -100,8 +99,6 @@ export default function BusinessMarketingPage() {
             )}
           </div>
           </div>
-
-          <ContentCalendarGenerator />
 
           <button 
           onClick={() => window.location.href = '/auth'}
