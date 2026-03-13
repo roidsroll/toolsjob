@@ -24,6 +24,7 @@ const navLinks = [
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -79,10 +80,19 @@ export function Navbar() {
             ) : (
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2 px-3 py-1 bg-gray-50 border border-gray-200 rounded-full">
-                  {session.user?.image ? (
-                    <Image src={session.user.image} alt="Avatar" width={24} height={24} className="w-6 h-6 rounded-full border border-black/10 grayscale" />
+                  {session.user?.image && !imgError ? (
+                    <Image 
+                      src={session.user.image} 
+                      alt="" 
+                      width={24} 
+                      height={24} 
+                      className="w-6 h-6 rounded-full border border-black/10 object-cover" 
+                      onError={() => setImgError(true)}
+                    />
                   ) : (
-                    <User className="w-4 h-4" />
+                    <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[8px] font-black uppercase">
+                      {session.user?.name?.charAt(0) || 'U'}
+                    </div>
                   )}
                   <span className="text-xs font-bold uppercase tracking-widest truncate max-w-[100px]">{session.user?.name?.split(' ')[0]}</span>
                 </div>
@@ -100,11 +110,11 @@ export function Navbar() {
                 <Menu className="w-5 h-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72 p-0">
+            <SheetContent side="right" className="w-72 p-0 border-l-2 border-black">
               <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               <div className="flex flex-col h-full">
                 {/* Sheet Header */}
-                <div className="flex items-center justify-between p-4 border-b">
+                <div className="flex items-center justify-between p-4 border-b-2 border-black bg-neutral-50">
                   <Link
                     href="/"
                     className="flex items-center gap-2"
@@ -113,7 +123,7 @@ export function Navbar() {
                     <div className="w-7 h-7 bg-black rounded-lg flex items-center justify-center">
                       <Zap className="w-3.5 h-3.5 text-white" />
                     </div>
-                    <span className="font-bold text-lg">ToolsJob</span>
+                    <span className="font-bold text-lg uppercase tracking-tight">ToolsJob</span>
                   </Link>
                   <Button
                     variant="ghost"
@@ -131,7 +141,7 @@ export function Navbar() {
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-black hover:bg-gray-100 rounded-lg transition-all duration-200"
+                      className="px-4 py-3 text-sm font-black uppercase tracking-widest hover:text-white hover:bg-black rounded-none transition-all duration-200 border-b border-transparent hover:border-black"
                     >
                       {link.label}
                     </Link>
@@ -139,15 +149,15 @@ export function Navbar() {
                 </div>
 
                 {/* Sheet Footer CTA */}
-                <div className="p-4 border-t flex flex-col gap-2">
+                <div className="p-4 border-t-2 border-black flex flex-col gap-2">
                   {!session ? (
                     <>
-                      <Button variant="outline" className="w-full" asChild>
+                      <Button variant="outline" className="w-full rounded-none border-2 border-black font-black uppercase text-xs" asChild>
                         <Link href="/auth" onClick={() => setIsOpen(false)}>
                           Login
                         </Link>
                       </Button>
-                      <Button className="w-full bg-black text-white hover:bg-gray-800" asChild>
+                      <Button className="w-full bg-black text-white hover:bg-neutral-800 rounded-none border-2 border-black font-black uppercase text-xs" asChild>
                         <Link href="/auth" onClick={() => setIsOpen(false)}>
                           Get Started
                         </Link>
@@ -155,14 +165,27 @@ export function Navbar() {
                     </>
                   ) : (
                     <div className="space-y-3">
-                      <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                        {session.user?.image && <Image src={session.user.image} alt="Avatar" width={32} height={32} className="w-8 h-8 rounded-full border border-black/10 grayscale" />}
+                      <div className="flex items-center gap-3 p-3 bg-neutral-50 border-2 border-black">
+                        {session.user?.image && !imgError ? (
+                          <Image 
+                            src={session.user.image} 
+                            alt="" 
+                            width={32} 
+                            height={32} 
+                            className="w-8 h-8 rounded-full border border-black/10 object-cover" 
+                            onError={() => setImgError(true)}
+                          />
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-[10px] font-black uppercase">
+                            {session.user?.name?.charAt(0) || 'U'}
+                          </div>
+                        )}
                         <div>
-                          <p className="text-xs font-black uppercase tracking-widest">{session.user?.name}</p>
-                          <p className="text-[10px] text-gray-500 truncate">{session.user?.email}</p>
+                          <p className="text-xs font-black uppercase tracking-widest truncate max-w-[150px]">{session.user?.name}</p>
+                          <p className="text-[10px] text-gray-500 truncate max-w-[150px]">{session.user?.email}</p>
                         </div>
                       </div>
-                      <Button variant="outline" className="w-full border-red-100 text-red-600 hover:bg-red-50 hover:text-red-700" onClick={() => { signOut(); setIsOpen(false); }}>
+                      <Button variant="outline" className="w-full rounded-none border-2 border-black text-red-600 hover:bg-red-50 font-black uppercase text-xs tracking-widest" onClick={() => { signOut(); setIsOpen(false); }}>
                         <LogOut className="w-4 h-4 mr-2" />
                         Deauthorize
                       </Button>

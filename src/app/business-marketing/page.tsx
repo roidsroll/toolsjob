@@ -1,16 +1,37 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 import hashtagsData from '@/utils/hashtags.json';
 import ROICalculator from '@/components/tools/ROICalculator';
 import UTMLinkBuilder from '@/components/tools/UTMLinkBuilder';
+import ContentCalendarGenerator from '@/components/tools/ContentCalendarGenerator';
 
 type Category = keyof typeof hashtagsData;
 
 export default function BusinessMarketingPage() {
+  const { data: session, status } = useSession();
   const [selectedCategory, setSelectedCategory] = useState<Category>('digital_marketing');
   const [generatedHashtags, setGeneratedHashtags] = useState<string>('');
   const [copied, setCopied] = useState(false);
+
+  // Authentication Check
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      redirect("/auth");
+    }
+  }, [status]);
+
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-black border-t-transparent animate-spin" />
+      </div>
+    );
+  }
+
+  if (!session) return null;
 
   const generateHashtags = () => {
     const tags = hashtagsData[selectedCategory];
@@ -35,6 +56,11 @@ export default function BusinessMarketingPage() {
           Marketing Suite
         </h1>
         
+        {/* Calendar Management Section */}
+        <div className="mb-12">
+          <ContentCalendarGenerator />
+        </div>
+
         {/* ROI Calculator Section */}
         <ROICalculator />
 
