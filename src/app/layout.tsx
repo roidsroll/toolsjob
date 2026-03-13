@@ -5,6 +5,7 @@ import "./globals.css";
 import { Navbar } from "../components/shared/Navbar";
 import { Footer } from "../components/shared/Footer";
 import { AuthProvider } from "@/components/providers/session-provider";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,6 +56,7 @@ export default function RootLayout({
           <Navbar />
           <main>{children}</main>
           <Footer />
+          <Analytics />
           <script
             dangerouslySetInnerHTML={{
               __html: `
