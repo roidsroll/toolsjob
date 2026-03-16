@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ShieldCheck, Briefcase, Calculator, ArrowLeft, Lock, ChevronRight, LogOut, Github } from 'lucide-react';
+import { ShieldCheck, Briefcase, Calculator, ArrowLeft, Lock, ChevronRight, LogOut, Github, Facebook } from 'lucide-react';
 import { signIn, signOut, useSession } from "next-auth/react";
 
 const professions = [
@@ -91,6 +91,15 @@ export default function LoginPage() {
                 >
                   <Github className="w-4 h-4" />
                   GitHub Account
+                </Button>
+
+                <Button 
+                  onClick={() => signIn("facebook")}
+                  className="w-full h-14 rounded-none border-2 border-black bg-white text-black hover:bg-black hover:text-white transition-all font-black text-xs uppercase tracking-widest flex items-center justify-center gap-3"
+                  disabled={isLoading}
+                >
+                  <Facebook className="w-4 h-4 fill-current" />
+                  Facebook Account
                 </Button>
               </div>
             ) : (
