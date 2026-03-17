@@ -7,13 +7,14 @@ import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ShieldCheck, Briefcase, Calculator, ArrowLeft, Lock, ChevronRight, LogOut, Github, Facebook } from 'lucide-react';
+import { ShieldCheck, Briefcase, Calculator, ArrowLeft, Lock, ChevronRight, LogOut, Github, Facebook, Video } from 'lucide-react';
 import { signIn, signOut, useSession } from "next-auth/react";
 
 const professions = [
   { id: 'network-engineer', label: 'Network Engineer', icon: <ShieldCheck className="w-4 h-4 mr-3" /> },
   { id: 'business-marketing', label: 'Business Marketing', icon: <Briefcase className="w-4 h-4 mr-3" /> },
   { id: 'accounting', label: 'Accounting', icon: <Calculator className="w-4 h-4 mr-3" /> },
+  { id: 'content-creator', label: 'Content Creator', icon: <Video className="w-4 h-4 mr-3" /> },
 ];
 
 export default function LoginPage() {
@@ -100,6 +101,21 @@ export default function LoginPage() {
                 >
                   <Facebook className="w-4 h-4 fill-current" />
                   Facebook Account
+                </Button>
+
+                <Button 
+                  onClick={() => signIn("tiktok")}
+                  className="w-full h-14 rounded-none border-2 border-black bg-white text-black hover:bg-black hover:text-white transition-all font-black text-xs uppercase tracking-widest flex items-center justify-center gap-3"
+                  disabled={isLoading}
+                >
+                  <svg 
+                    className="w-4 h-4 fill-current" 
+                    viewBox="0 0 24 24" 
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M12.525.02c1.31-.032 2.61.123 3.864.46v4.352c-.822-.262-1.68-.38-2.535-.353-.87.03-1.724.237-2.51.61-.413.204-.79.475-1.12.804-.33.328-.59.715-.77 1.14-.18.425-.268.883-.26 1.343l.01 4.332-.01 5.385c-.01 1.05-.333 2.07-.927 2.924-.594.854-1.442 1.487-2.42 1.808-.98.322-2.036.37-3.036.14-1.0-.23-1.9-.766-2.583-1.545-.683-.78-.1.082-.62-.977-.52-1.06-.63-2.31-.31-3.447.32-1.137 1.04-2.124 2.02-2.775.98-.65 2.15-.916 3.29-.747v4.4c-.655-.143-1.34-.055-1.933.248-.593.303-1.047.82-1.282 1.44-.235.623-.222 1.312.036 1.927.258.615.733 1.104 1.332 1.373.6.27 1.282.288 1.895.05.614-.24 1.124-.694 1.428-1.28.305-.587.397-1.264.26-1.905l.02-12.795c4.103.013 7.425 3.322 7.425 7.425v.195h4.37V7.51a8.667 8.667 0 0 0 4.23-1.574A8.683 8.683 0 0 0 23.97 1.91V0c-1.31.03-2.61-.123-3.86-.46a11.123 11.123 0 0 1-5.06-3.89h-2.525z"/>
+                  </svg>
+                  TikTok Account
                 </Button>
               </div>
             ) : (
